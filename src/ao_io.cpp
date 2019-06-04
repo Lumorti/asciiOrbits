@@ -1,50 +1,60 @@
 #include "ao_io.h"
 #include <iostream>
 #include <sys/ioctl.h>
+#include <string.h>
+#include <curses.h>
 
-void charBuffer::drawBuffer(){
+charBuffer::charBuffer(){
 
-	struct winsize w;
-	ioctl(0, TIOCGWINSZ, &w);
+	initscr();
+	cbreak();
+	noecho();
+	keypad(stdscr, true);
 
-	int yStart = int((bufferY - w.ws_row) / 2);
-	int xStart = int((bufferX - w.ws_col) / 2);
+}
 
-	for (int i = yStart; i < yStart + w.ws_row; i++){
+void charBuffer::reset(){
 
-		for (int j = xStart; j < xStart + w.ws_col; j++){
+	int h, w;
+	getmaxyx(stdscr, h, w);
 
-			std::cout << buffer[i][j];
+	for (int i = 0; i < h; i++){
+
+		for (int j = 0; j < w; j++){
+
+			mvwaddch(stdscr, i, j, '.');
 
 		}
 
 	}
 
-}
-
-void charBuffer::resetBuffer(){
-
-	for (int i = 0; i < bufferY; i++){
-
-		for (int j = 0; j < bufferX; j++){
-
-			buffer[i][j] = '.';
-
-		}
-
-	}
 
 }
 
-void charBuffer::setChar(int x, int y, char to){
+void charBuffer::draw(){
 
-	buffer[y][x] = to;
-
-}
-
-void charBuffer::setCharRel(int x, int y, char to){
-
-	buffer[y+int(bufferY/2)][x+int(bufferX/2)] = to;
+	wrefresh(stdscr);
 
 }
 
+void charBuffer::writeChar(int x, int y, char to){
+
+	mvwaddch(stdscr, y, x, to);
+
+}
+
+void charBuffer::writeCharRel(int x, int y, char to){
+
+	int h, w;
+	getmaxyx(stdscr, h, w);
+	mvwaddch(stdscr, y+int(h/2), x+int(w/2), to);
+
+}
+
+void charBuffer::writeStringRel(int x, int y, char to[]){
+
+	int h, w;
+	getmaxyx(stdscr, h, w);
+	mvwaddstr(stdscr, y+int(h/2), x+int(w/2), to);
+
+}

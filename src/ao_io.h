@@ -7,10 +7,13 @@ class charBuffer {
 
 	public:
 
-	void drawBuffer();
-	void resetBuffer();
+	charBuffer();
 
-	void setChar(int, int, char);
-	void setCharRel(int, int, char);
+	void draw();
+	void reset();
+
+	void writeChar(int, int, char);
+	void writeCharRel(int, int, char);
+	void writeStringRel(int, int, char[]);
 
 };

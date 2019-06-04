@@ -1,17 +1,17 @@
 CC=g++
-CFLAGS=
+CFLAGS=-lncurses
 
 .PHONY: all clean
 all: ao
 
-ao: main.o ao_io.o
-	$(CC) -o ao ao_io.o main.o
+ao: ao.o ao_io.o
+	$(CC) $(CFLAGS) -o ao ao_io.o ao.o
 
-main.o:
-	$(CC) -c main.cpp
+ao.o:
+	$(CC) $(CFLAGS) -c ao.cpp
 
 ao_io.o:
-	$(CC) -c ao_io.cpp
+	$(CC) $(CFLAGS) -c ao_io.cpp
 
 clean:
 	rm *.o *.h.gch 
