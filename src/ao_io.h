@@ -1,3 +1,4 @@
+#include "ao_planet.h"
 
 class charBuffer {
 
@@ -12,8 +13,11 @@ class charBuffer {
 	void draw();
 	void reset();
 
+	void close();
 	void writeChar(int, int, char);
 	void writeCharRel(int, int, char);
-	void writeStringRel(int, int, char[]);
+	void mvCursorRel(int, int);
+	void writeStringRel(int, int, const char*);
+	void addPlanet(planet);
 
 };
