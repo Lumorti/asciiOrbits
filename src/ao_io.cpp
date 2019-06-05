@@ -37,9 +37,36 @@ void charBuffer::reset(){
 
 }
 
+void charBuffer::hideCursor(){
+
+	curs_set(0);
+
+}
+
+void charBuffer::showCursor(){
+
+	curs_set(1);
+
+}
+
+void charBuffer::updateSize(){
+
+	getmaxyx(stdscr, h, w);
+
+}
+
+void charBuffer::updateCenter(int x, int y){
+
+	centerX = x;
+	centerY = y;
+
+}
+
 void charBuffer::addPlanet(planet x){
 
-	mvwaddch(stdscr, x.getX(), x.getY(), 'x');	
+	if (x.getSize() > 0){
+		mvwaddch(stdscr, x.getY()+int(h/2)-centerY, x.getX()+int(w/2)-centerX, 'x');	
+	}
 
 }
 
@@ -57,24 +84,18 @@ void charBuffer::writeChar(int x, int y, char to){
 
 void charBuffer::writeCharRel(int x, int y, char to){
 
-	int h, w;
-	getmaxyx(stdscr, h, w);
 	mvwaddch(stdscr, y+int(h/2), x+int(w/2), to);
 
 }
 
 void charBuffer::mvCursorRel(int x, int y){
 
-	int h, w;
-	getmaxyx(stdscr, h, w);
 	wmove(stdscr, y+int(h/2), x+int(w/2));
 
 }
 
 void charBuffer::writeStringRel(int x, int y, const char* to){
 
-	int h, w;
-	getmaxyx(stdscr, h, w);
 	mvwaddstr(stdscr, y+int(h/2), x+int(w/2), to);
 
 }

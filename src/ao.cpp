@@ -22,6 +22,9 @@ int main(){
 
 		if (menu == 0){
 
+			// Get the width and height of the terminal
+			buf.updateSize();
+
 			// Reset the buffer
 			buf.reset();
 
@@ -58,14 +61,18 @@ int main(){
 						menu = 1;
 						
 						// Load planets
-						for (int i=0; i < maxPlanets; i++){
+						//for (int i=0; i < maxPlanets; i++){
 
-							planetArray[i] = planet(5, i*15, 0);
+						//	planetArray[i] = planet(5, i*15, 0);
 
-						}
+						//}
+
+						planetArray[0] = planet(5, 10, 0);
 
 						// Load ships
 
+						// Hide cursor
+						buf.hideCursor();
 
 					// If loading game 
 					} else if (selectedItem == 0){
@@ -96,6 +103,9 @@ int main(){
 
 		} else if (menu == 1){
 		
+			// Get the width and height of the terminal
+			buf.updateSize();
+
 			// Reset the buffer
 			buf.reset();
 
@@ -116,6 +126,7 @@ int main(){
 				if (ch == 27){
 
 					menu = 0;
+					buf.showCursor();
 
 				}
 

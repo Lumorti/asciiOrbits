@@ -10,7 +10,7 @@ planet::planet(int asize, int ax, int ay){
 
 planet::planet(){
 
-	size = 5;
+	size = 0;
 	x = 0;
 	y = 0;
 

@@ -2,9 +2,11 @@
 
 class charBuffer {
 
-	static const int bufferX = 200;
-	static const int bufferY = 200;
-	char buffer[bufferY][bufferX];
+	int h = 24;
+	int w = 80;
+
+	int centerX = 0;
+	int centerY = 0;
 
 	public:
 
@@ -14,10 +16,14 @@ class charBuffer {
 	void reset();
 
 	void close();
+	void updateSize();
+	void updateCenter(int, int);
 	void writeChar(int, int, char);
 	void writeCharRel(int, int, char);
 	void mvCursorRel(int, int);
 	void writeStringRel(int, int, const char*);
 	void addPlanet(planet);
+	void hideCursor();
+	void showCursor();
 
 };
