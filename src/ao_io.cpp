@@ -76,7 +76,7 @@ void charBuffer::addPlanet(planet x){
 	int planetY = x.getY()+int(h/2)-centerY;
 
 	// Don't draw if further away than the cutoff
-	if (pow(centerX-x.getX(), 2)+pow(centerY-x.getY(), 2) > drawCutoff){return;}
+	if (pow(centerX-x.getX(), 2)+pow(centerY-x.getY(), 2) > pow(drawCutoff, 2)){return;}
 
 	char planetOuter = x.getOuter();
 	char planetInner = x.getInner();
