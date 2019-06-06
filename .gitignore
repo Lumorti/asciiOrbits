@@ -1,3 +1,7 @@
+ao
+src/ao
+*.swp
+
 # Prerequisites
 *.d
 

@@ -65,7 +65,7 @@ void charBuffer::updateCenter(int x, int y){
 void charBuffer::addPlanet(planet x){
 
 	if (x.getSize() > 0){
-		mvwaddch(stdscr, x.getY()+int(h/2)-centerY, x.getX()+int(w/2)-centerX, 'x');	
+		mvwaddch(stdscr, x.getY()+int(h/2)-centerY, x.getX()+int(w/2)-centerX, 'x');
 	}
 
 }
