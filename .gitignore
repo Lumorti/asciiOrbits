@@ -1,6 +1,8 @@
 ao
 src/ao
 *.swp
+*.sav
+*.log
 
 # Prerequisites
 *.d

@@ -1,4 +1,5 @@
 #include "ao_planet.h"
+#include "ao_ship.h"
 
 class charBuffer {
 
@@ -7,6 +8,10 @@ class charBuffer {
 
 	int centerX = 0;
 	int centerY = 0;
+
+	const float xScale = 1.5;
+	const float PI = 3.14159265;
+	const float drawCutoff = 100;
 
 	public:
 
@@ -23,6 +28,7 @@ class charBuffer {
 	void mvCursorRel(int, int);
 	void writeStringRel(int, int, const char*);
 	void addPlanet(planet);
+	void addShip(ship);
 	void hideCursor();
 	void showCursor();
 
