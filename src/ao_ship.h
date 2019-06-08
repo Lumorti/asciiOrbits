@@ -19,6 +19,7 @@ class ship {
     float posYSave = 0;
     float velXSave = 0;
     float velYSave = 0;
+    float thrustSave = 0;
 
     public:
 

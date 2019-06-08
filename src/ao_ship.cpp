@@ -154,6 +154,7 @@ void ship::save(){
     velYSave = velY;
     posXSave = posX;
     posYSave = posY;
+    thrustSave = thrust;
 
 }
 
@@ -163,5 +164,6 @@ void ship::revert(){
     velY = velYSave;
     posX = posXSave;
     posY = posYSave;
+    thrust = thrustSave;
 
 }

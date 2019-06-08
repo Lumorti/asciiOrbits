@@ -108,6 +108,7 @@ void physicsHandler::runStep(planet * planetArray, ship * shipArray, traj * traj
 
     // For the player ship, generate the trajectory
     shipArray[0].save();
+    shipArray[0].setThrust(0);
     int i = 0;
     int j = 0;
     while (i < maxCoordsInTraj) {
