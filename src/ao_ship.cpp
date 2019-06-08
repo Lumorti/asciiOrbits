@@ -1,4 +1,5 @@
 #include "ao_ship.h"
+#include <math.h>
 
 ship::ship(){
 
@@ -56,6 +57,18 @@ int ship::getShape(){
 
 }
 
+float ship::getVelX(){
+
+    return velX;
+
+}
+
+float ship::getVelY(){
+
+    return velY;
+
+}
+
 void ship::setRot(int angle){
 
     rot = angle;
@@ -92,14 +105,45 @@ void ship::changeThrust(int t){
 
 }
 
-void ship::setX(float newX){
+void ship::changeVelX(float xVelChange){
 
-    posX = newX;
+    velX += xVelChange;
 
 }
 
-void ship::setY(float newY){
+void ship::changeVelY(float yVelChange){
 
-    posY = newY;
+    velY += yVelChange;
+
+}
+
+// Update the positions based on the forces and closest planet (checking collisions)
+void ship::update(float xVelChange, float yVelChange, planet p){
+
+    velX += xVelChange;
+    velY += yVelChange;
+
+    // Limit max velocity
+    float mag = sqrt(pow(velX, 2) + pow(velY, 2));
+    if (mag > velLimit){
+
+        velX -= xVelChange;
+        velY -= yVelChange;
+
+    }
+
+    posX += velX;
+    posY += velY;
+
+    // Check if inside closest planet
+    if (sqrt(pow((posX-p.getX())/xScale, 2)+pow(posY-p.getY(), 2)) <= p.getSize()){
+
+        posX -= velX;
+        posY -= velY;
+
+        velX = 0;
+        velY = 0;
+
+    }
 
 }

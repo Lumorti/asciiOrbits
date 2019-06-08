@@ -1,7 +1,6 @@
 #include "ao_ship.h"
 #include "ao_planet.h"
-
-const int maxCoordsInTraj = 100;
+#include "ao_const.h"
 
 struct traj {
 
@@ -11,10 +10,20 @@ struct traj {
 
 };
 
+struct physInfo {
+
+    float x;
+    float y;
+    float vx;
+    float vy;
+    float fx;
+    float fy;
+
+};
+
 class physicsHandler {
 
-    const float physicsCutoff = 100;
-    const float forceScale = 1;
+
 
     int maxShips = 0;
     int maxPlanets = 0;
@@ -22,6 +31,6 @@ class physicsHandler {
     public:
 
     physicsHandler(int, int);
-    void runStep(planet *, ship *, traj *);
+    void runStep(planet *, ship *, traj *, physInfo *);
 
 };

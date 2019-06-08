@@ -1,22 +1,39 @@
 #include "ao_io.h"
 #include "ao_save.h"
 #include "ao_physics.h"
+#include "ao_const.h"
 
 #include <unistd.h>
 #include <chrono>
 #include <thread>
 #include <curses.h>
 #include <math.h>
+#include <string>
+#include <random>
 
-const int refreshDelay = 100;
-const int maxPlanets = 100;
-const int maxShips = 100;
-const int planetSpacing = 20;
+using namespace std;
 
 // Load planets
 void genPlanets(planet * array){
 
-	array[0] = planet(5, 10, 0);
+	random_device rd;
+    mt19937 eng(rd());
+	uniform_int_distribution<> distr(planetMinCoord, planetMaxCoord);
+    uniform_int_distribution<> distr2(planetMinSize, planetMaxSize);
+
+	int x, y, psize;
+
+    for(int n = 0; n < numPlanets; n++){
+
+		x = distr(eng);
+		y = distr(eng);
+		psize = distr2(eng);
+		array[n] = planet(psize, x, y);
+
+		// If too close to the player, delete it
+		if (sqrt(pow(x, 2)+pow(y,2)) - psize < minDistance){array[n] = planet();}
+
+	}
 
 }
 
@@ -29,20 +46,30 @@ void genShips(ship * array){
 
 int main(){
 
+	// Main drawing handler
 	charBuffer buf;
+
+	// Menu vars
 	int menu = 0;
 	int selectedItem = 0;
-	int ch;
 
+	// User input var
+	int ch;
+	int ch2;
+
+	// Handler for loading/saving data
 	gameLoader saveData;
 	int numSaves = saveData.getNumSaves();
 	if (numSaves == 0){selectedItem = 1;}
 
+	// For keeping track of the planets/ships
 	planet planetArray[maxPlanets];
 	ship shipArray[maxShips];
 
+	// For handling the physics
 	physicsHandler sim(maxShips, maxPlanets);
 	traj mainTraj;
+	physInfo info;
 
 	// Hide cursor
 	buf.hideCursor();
@@ -139,10 +166,21 @@ int main(){
 			for (int i=0; i < maxPlanets; i++){buf.addPlanet(planetArray[i]);}
 			for (int i=0; i < maxShips; i++){buf.addShip(shipArray[i]);}
 
+			// Run the simulation for a single step
+			sim.runStep(planetArray, shipArray, &mainTraj, &info);
+
+			// Write info to the screen
+			buf.writeString(2, 2, "x = "); buf.writeFloatToPrec(7, 2, info.x, 1);
+			buf.writeString(2, 3, "y = "); buf.writeFloatToPrec(7, 3, info.y, 1);
+
+			buf.writeString(14, 2, "vx = "); buf.writeFloatToPrec(19, 2, info.vx, 1);
+			buf.writeString(14, 3, "vy = "); buf.writeFloatToPrec(19, 3, info.vy, 1);
+
+			buf.writeString(26, 2, "fx = "); buf.writeFloatToPrec(31, 2, info.fx, 1);
+			buf.writeString(26, 3, "fy = "); buf.writeFloatToPrec(31, 3, info.fy, 1);
+
 			// Render the buffer to the terminal
 			buf.draw();
-
-			sim.runStep(planetArray, shipArray, &mainTraj);
 
 			// Get key pressed
 			if ((ch = getch()) != ERR) {

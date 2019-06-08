@@ -1,9 +1,10 @@
-#include <string>
 #include "ao_io.h"
 #include <iostream>
 #include <sys/ioctl.h>
 #include <curses.h>
 #include <math.h>
+
+using namespace std;
 
 // Init the curses terminal
 charBuffer::charBuffer(){
@@ -116,19 +117,19 @@ void charBuffer::addShip(ship x){
 
 		mvwaddch(stdscr, shipY, shipX, 'O');
 
-		int exhaustX = shipX+int(1.5*sin(shipRot*PI/180));
-		int exhaustY = shipY+int(1.5*cos(shipRot*PI/180));
+		int deltaX = int(1.5*sin(shipRot*PI/180));
+		int deltaY = int(1.5*cos(shipRot*PI/180));
 
 		int shipThrust = x.getThrust();
-		if (shipThrust > 0){
+		mvwaddch(stdscr, shipY+deltaY, shipX+deltaX, ACS_BULLET);
 
-			mvwaddch(stdscr, exhaustY, exhaustX, ACS_DIAMOND);
+		for (int i = 1; i < shipThrust+1; i++){
 
-		} else {
-
-			mvwaddch(stdscr, exhaustY, exhaustX, ACS_BULLET);
+			mvwaddch(stdscr, shipY+i*deltaY, shipX+i*deltaX, ACS_DIAMOND);
 
 		}
+
+
 
 	}
 
@@ -163,8 +164,25 @@ void charBuffer::mvCursorRel(int x, int y){
 }
 
 // Write a string to the buffer, relative to the center
-void charBuffer::writeStringRel(int x, int y, const char* to){
+void charBuffer::writeStringRel(int x, int y, std::string to){
 
-	mvwaddstr(stdscr, y+int(h/2), x+int(w/2), to);
+	mvwaddstr(stdscr, y+int(h/2), x+int(w/2), to.c_str());
+
+}
+
+void charBuffer::writeFloatToPrec(int x, int y, float f, int prec){
+
+	stringstream stream;
+	stream << fixed << setprecision(prec) << f;
+	string s = stream.str();
+
+	writeString(x, y, s);
+
+}
+
+// Write a string to the buffer
+void charBuffer::writeString(int x, int y, std::string to){
+
+	mvwaddstr(stdscr, y, x, to.c_str());
 
 }

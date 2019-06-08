@@ -1,14 +1,18 @@
 #ifndef SHIP_H
 #define SHIP_H
+#include "ao_planet.h"
+#include "ao_const.h"
 
 class ship {
 
     float posX = 0;
     float posY = 0;
+    float velX = 0;
+    float velY = 0;
     int rot = 0;
     int shape = 0;
     int thrust = 0;
-    int maxThrust = 2;
+    int maxThrust = 3;
     bool hide = false;
     bool phys = true;
 
@@ -27,8 +31,11 @@ class ship {
     void changeRot(int);
     void setThrust(int);
     void changeThrust(int);
-    void setX(float);
-    void setY(float);
+    float getVelX();
+    float getVelY();
+    void changeVelX(float);
+    void changeVelY(float);
+    void update(float, float, planet);
 
 };
 
