@@ -15,6 +15,10 @@ class ship {
     int maxThrust = 3;
     bool hide = false;
     bool phys = true;
+    float posXSave = 0;
+    float posYSave = 0;
+    float velXSave = 0;
+    float velYSave = 0;
 
     public:
 
@@ -36,6 +40,8 @@ class ship {
     void changeVelX(float);
     void changeVelY(float);
     void update(float, float, planet);
+    void save();
+    void revert();
 
 };
 

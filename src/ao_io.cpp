@@ -121,7 +121,7 @@ void charBuffer::addShip(ship x){
 		int deltaY = int(1.5*cos(shipRot*PI/180));
 
 		int shipThrust = x.getThrust();
-		mvwaddch(stdscr, shipY+deltaY, shipX+deltaX, ACS_BULLET);
+		mvwaddch(stdscr, shipY+deltaY, shipX+deltaX, 'x');
 
 		for (int i = 1; i < shipThrust+1; i++){
 
@@ -130,6 +130,16 @@ void charBuffer::addShip(ship x){
 		}
 
 
+
+	}
+
+}
+
+void charBuffer::addTraj(traj x){
+
+	for (int i = 0; i < maxCoordsInTraj; i++) {
+
+		mvwaddch(stdscr, x.yCoords[i]+int(h/2)-centerY, x.xCoords[i]+int(w/2)-centerX, ACS_BULLET);
 
 	}
 
@@ -184,5 +194,35 @@ void charBuffer::writeFloatToPrec(int x, int y, float f, int prec){
 void charBuffer::writeString(int x, int y, std::string to){
 
 	mvwaddstr(stdscr, y, x, to.c_str());
+
+}
+
+void charBuffer::drawMap(planet * planetArray, traj t){
+
+	for (int i = 0; i < maxCoordsInTraj; i++) {
+
+		writeChar(t.xCoords[i]+int(w/2)-centerX, t.yCoords[i]+int(h/2)-centerY, '.');
+
+	}
+
+	for (int i = 0; i < maxPlanets; i++) {
+
+		if (planetArray[i].getSize() > 0){
+
+			int scaledX = (planetArray[i].getX() - centerX) / mapScale;
+			int scaledY = (planetArray[i].getY() - centerY) / mapScale;
+
+			if (abs(scaledX) < w/2-2 && abs(scaledY) < h/2-2){
+				writeCharRel(scaledX, scaledY, 'O');
+			}
+
+		}
+
+	}
+
+	for (int i = 2; i < w-2; i++) {writeChar(i, 1, '-'); writeChar(i, h-1, '-');}
+	for (int i = 2; i < h-1; i++) {writeChar(2, i, '|'); writeChar(w-2, i, '|');}
+
+	writeCharRel(0, 0, 'x');
 
 }

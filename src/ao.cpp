@@ -159,15 +159,18 @@ int main(){
 			buf.updateSize();
 			buf.reset();
 
+			// Run the simulation for a single step
+			sim.runStep(planetArray, shipArray, &mainTraj, &info);
+
 			// Update thhe player position in buffer memory
 			buf.updateCenter(shipArray[0].getX(), shipArray[0].getY());
+
+			// Draw the players trajectory
+			buf.addTraj(mainTraj);
 
 			// Draw ships and planets to buffer (if within a certain distance)
 			for (int i=0; i < maxPlanets; i++){buf.addPlanet(planetArray[i]);}
 			for (int i=0; i < maxShips; i++){buf.addShip(shipArray[i]);}
-
-			// Run the simulation for a single step
-			sim.runStep(planetArray, shipArray, &mainTraj, &info);
 
 			// Write info to the screen
 			buf.writeString(2, 2, "x = "); buf.writeFloatToPrec(7, 2, info.x, 1);
@@ -178,6 +181,9 @@ int main(){
 
 			buf.writeString(26, 2, "fx = "); buf.writeFloatToPrec(31, 2, info.fx, 1);
 			buf.writeString(26, 3, "fy = "); buf.writeFloatToPrec(31, 3, info.fy, 1);
+
+			buf.writeString(40, 2, "left/right to turn, up/down for change thrust");
+			buf.writeString(40, 3, "esc for menu,  m for map");
 
 			// Render the buffer to the terminal
 			buf.draw();
@@ -205,6 +211,39 @@ int main(){
 				} else if (ch == KEY_DOWN){
 
 					shipArray[0].changeThrust(-1);
+
+				// Pressing m opens map
+				} else if (ch == 109){
+
+					menu = 4;
+
+				}
+
+			}
+
+			// Wait for a bit
+			std::this_thread::sleep_for(std::chrono::milliseconds(refreshDelay));
+
+		} else if (menu == 4){
+
+			// Get the width and height of the terminal, reset screen
+			buf.updateSize();
+			buf.reset();
+
+			buf.drawMap(planetArray, mainTraj);
+
+			buf.writeString(4, 3, "m to return to game");
+
+			// Render the buffer to the terminal
+			buf.draw();
+
+			// Get key pressed
+			if ((ch = getch()) != ERR) {
+
+				// Return to menu on m
+				if (ch == 109){
+
+					menu = 1;
 
 				}
 

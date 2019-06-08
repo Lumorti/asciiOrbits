@@ -1,3 +1,6 @@
+#ifndef PHYSICS_H
+#define PHYSICS_H
+
 #include "ao_ship.h"
 #include "ao_planet.h"
 #include "ao_const.h"
@@ -23,8 +26,6 @@ struct physInfo {
 
 class physicsHandler {
 
-
-
     int maxShips = 0;
     int maxPlanets = 0;
 
@@ -34,3 +35,5 @@ class physicsHandler {
     void runStep(planet *, ship *, traj *, physInfo *);
 
 };
+
+#endif

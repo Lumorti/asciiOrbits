@@ -1,9 +1,11 @@
 #include "ao_planet.h"
 #include "ao_ship.h"
+#include "ao_const.h"
+#include "ao_physics.h"
+
 #include <string>
 #include <iomanip>
 #include <sstream>
-#include "ao_const.h"
 
 
 class charBuffer {
@@ -32,6 +34,8 @@ class charBuffer {
 	void writeFloatToPrec(int, int, float, int);
 	void addPlanet(planet);
 	void addShip(ship);
+	void addTraj(traj);
+	void drawMap(planet *, traj);
 	void hideCursor();
 	void showCursor();
 

@@ -127,15 +127,15 @@ void ship::update(float xVelChange, float yVelChange, planet p){
     float mag = sqrt(pow(velX, 2) + pow(velY, 2));
     if (mag > velLimit){
 
-        velX -= xVelChange;
-        velY -= yVelChange;
+        velX = velX * (velLimit / mag);
+        velY = velY * (velLimit / mag);
 
     }
 
     posX += velX;
     posY += velY;
 
-    // Check if inside closest planet
+    // Check if would reduce distance to closest planet
     if (sqrt(pow((posX-p.getX())/xScale, 2)+pow(posY-p.getY(), 2)) <= p.getSize()){
 
         posX -= velX;
@@ -145,5 +145,23 @@ void ship::update(float xVelChange, float yVelChange, planet p){
         velY = 0;
 
     }
+
+}
+
+void ship::save(){
+
+    velXSave = velX;
+    velYSave = velY;
+    posXSave = posX;
+    posYSave = posY;
+
+}
+
+void ship::revert(){
+
+    velX = velXSave;
+    velY = velYSave;
+    posX = posXSave;
+    posY = posYSave;
 
 }
